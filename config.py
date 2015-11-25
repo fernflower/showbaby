@@ -1,0 +1,3 @@
+REMOTE_HOST = "ina@kreda.today"
+REMOTE_PORT = 9000
+LOCAL_PORT = 8081

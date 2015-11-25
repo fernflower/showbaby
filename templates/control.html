@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block data %}
+<form class="form-horizontal" action="{{url_for('camera_manage')}}">
+    <fieldset>
+        <div class="form-group">
+            <div class="col-md-12">
+                <img src="http://192.168.0.30:8081"></img>
+                <p>
+                {% if on_air %}
+                On Air
+                {% else %}
+                Off
+                {% endif %}
+                </p>
+            </div>
+        </div>
+        <!-- Button (Double) -->
+        <div class="form-group">
+            <div class="col-md-8">
+                <button name="button" value="on" id="button_on" class="btn btn-success" type="submit">Camera ON</button>
+                <button name="button" value="off" id="button_off" class="btn btn-danger" type="submit">Camera OFF</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>
+
+{% endblock %}
