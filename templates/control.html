@@ -6,6 +6,7 @@
         <div class="form-group">
             <div class="col-md-12">
                 <img src="{{stream_url}}"></img>
+                {% if on_air %}<p><a href="{{outer_stream_url}}">Live video</p>{% endif %}
             </div>
         </div>
         <!-- Button (Double) -->
