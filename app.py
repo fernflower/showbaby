@@ -15,6 +15,30 @@ def _get_outer_stream_url():
     return "http://%s:%d" % (config.REMOTE_IP, config.REMOTE_PORT)
 
 
+def start_outer_stream():
+    try:
+        subprocess.check_call(
+            ['/bin/sh', '-c',
+                ('autossh -M 20000 -f -N -o "PubkeyAuthentication=yes" '
+                '%(rhost)s -R %(rport)s:localhost:%(lport)s -C') % {
+                    'rport': config.REMOTE_PORT,
+                    'lport': config.LOCAL_PORT,
+                    'rhost': config.REMOTE_HOST}])
+        return {'result': 'success'}
+    except subprocess.CalledProcessError as e:
+        LOG.error(e.message)
+        return {'result': 'fail', 'error': e.message}
+
+
+def stop_outer_stream():
+    try:
+        subprocess.check_call(['/bin/sh', '-c', 'kill $(pidof autossh)'])
+        return {'result': 'success'}
+    except subprocess.CalledProcessError as e:
+        LOG.error(e.message)
+        return {'result': 'fail', 'error': e.message}
+
+
 @app.route('/')
 def control():
     res = subprocess.call(['pidof', 'autossh'])
@@ -24,23 +48,12 @@ def control():
                                  outer_stream_url=_get_outer_stream_url())
 
 
-@app.route('/manage')
+@app.route('/manage', methods=['POST'])
 def camera_manage():
-    action = flask.request.args.get('button')
-    try:
-        if action == u'on':
-            subprocess.check_call(
-                ['/bin/sh', '-c',
-                 ('autossh -M 20000 -f -N -o "PubkeyAuthentication=yes" '
-                  '%(rhost)s -R %(rport)s:localhost:%(lport)s -C') % {
-                      'rport': config.REMOTE_PORT,
-                      'lport': config.LOCAL_PORT,
-                      'rhost': config.REMOTE_HOST}])
-        else:
-            subprocess.check_call(['/bin/sh', '-c', 'kill $(pidof autossh)'])
-    except subprocess.CalledProcessError as e:
-        LOG.error(e.message)
-    return flask.redirect('/')
+    action = flask.request.form.get('button')
+    res = (start_outer_stream()
+           if action == u'on' else stop_outer_stream())
+    return flask.jsonify(**res)
 
 
 if __name__ == '__main__':
