@@ -2,10 +2,12 @@
 A simple baby monitor with GUI for raspberry pi
 
 ## Installation
+[values in brackets should be double checked and changed]
 
 ### Raspberry pi setup
 
 I personally prefer [minibian](https://minibianpi.wordpress.com/), but it should work with any raspberry distro of your choice.
+Make sure that ssh-keys are ok and you are able to login into your vps from raspberry without password.
 
 ### Motion setup
 
@@ -67,7 +69,8 @@ sudo apt-get install autossh
 
 Set proper parameters in config.py
 ```
-REMOTE_HOST = "ina@95.85.51.79" [user@yourvps]
+# vps user
+REMOTE_USER = "ina" [your vps user]
 # vps port to stream
 REMOTE_PORT = 9000
 # motion webcam_port
@@ -75,7 +78,7 @@ LOCAL_PORT = 8081
 # rasberry pi ip
 LOCAL_IP = "192.168.0.30"
 # vps ip
-REMOTE_IP = "kreda.today"
+REMOTE_IP = "95.85.51.79" [your vps ip]
 ```
 
 ### Autostart
@@ -87,3 +90,7 @@ crontab -l | { cat; echo "@reboot /home/ina/projects/showbaby/.venv/bin/uwsgi --
 ###
 
 Voila, reaching your raspberry pi's ip in browser shows you the GUI to control streaming to the outside world! :)
+
+## TODO
+- [ ] ansible job for autoinstall
+- [ ] android widget for streaming control
