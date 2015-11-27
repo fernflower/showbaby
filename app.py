@@ -20,10 +20,11 @@ def start_outer_stream():
         subprocess.check_call(
             ['/bin/sh', '-c',
                 ('autossh -M 20000 -f -N -o "PubkeyAuthentication=yes" '
-                 '%(rhost)s -R %(rport)s:localhost:%(lport)s -C') % {
+                 '%(ruser)s@%(rip)s -R %(rport)s:localhost:%(lport)s -C') % {
                      'rport': config.REMOTE_PORT,
                      'lport': config.LOCAL_PORT,
-                     'rhost': config.REMOTE_HOST}])
+                     'rip': config.REMOTE_IP,
+                     'ruser': config.REMOTE_USER}])
         return {'result': 'success'}
     except subprocess.CalledProcessError as e:
         LOG.error(e.message)
