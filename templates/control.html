@@ -5,7 +5,7 @@
     <fieldset>
         <div class="form-group">
             <div class="col-md-12">
-                <img src="{{stream_url}}" />
+                <img class="img-responsive" src="{{stream_url}}" />
                 <p id="result">{% if on_air %}<a href="{{outer_stream_url}}" target="_blank">Live video{% endif %}</a>
                 </p>
             </div>
@@ -13,8 +13,8 @@
         <!-- Button (Double) -->
         <div class="form-group">
             <div class="col-md-8">
-                <a href="#" id="on" class="btn btn-success submitbtn" {% if on_air %} disabled="" {% else %} enabled="" {% endif %}>Camera ON</a>
-                <a href="#" id="off" class="btn btn-danger submitbtn" {% if on_air %} enabled="" {% else %} disabled="" {% endif %}>Camera OFF</a>
+                <a href="#" id="on" class="btn btn-success submitbtn btn-large" {% if on_air %} disabled="" {% else %} enabled="" {% endif %}>Camera ON</a>
+                <a href="#" id="off" class="btn btn-danger submitbtn btn-large" {% if on_air %} enabled="" {% else %} disabled="" {% endif %}>Camera OFF</a>
             </div>
         </div>
 
