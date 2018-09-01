@@ -1,0 +1,32 @@
+FROM resin/rpi-raspbian:wheezy
+
+ARG width=640
+ARG height=320
+ARG videodevice=/dev/video0
+ARG framerate=15
+ARG stream_port=8081
+ARG stream_localhost=off
+ARG target_dir=/var/lib/motion
+ARG output_pictures=off
+
+ENV WIDTH $width
+ENV HEIGHT $height
+ENV VIDEODEVICE $videodevice
+ENV FRAMERATE $framerate
+ENV STREAM_PORT $stream_port
+ENV STREAM_LOCALHOST $stream_localhost
+ENV TARGET_DIR $target_dir
+ENV OUTPUT_PICTURES $output_pictures
+
+COPY . /showbaby
+
+RUN apt-get update && \
+    apt-get install -y motion v4l-utils python-pip && \
+    pip install j2cli && \
+    rm -rf /var/lib/apt/lists 
+
+RUN cp /etc/motion/motion.conf /etc/motion/motion.conf.bkp && \ 
+    j2 /showbaby/docker/motion.j2 > /etc/motion/motion.conf
+
+EXPOSE $STREAM_PORT
+ENTRYPOINT motion -c /etc/motion/motion.conf

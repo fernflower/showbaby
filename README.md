@@ -2,12 +2,18 @@
 A simple baby monitor with GUI for raspberry pi
 
 ## Installation
-[values in brackets should be double checked and changed]
+Added docker files for customizing and launching motion on ubuntu and rpi-rasbian [wip].
+Docker images don't include nginx/uwsgi/flask for having additional webui with 2 stream control buttons
+(to be honest getting back to this project 2 years from initial commit makes in look like an overkill).
 
 ### Raspberry pi setup
 
 I personally prefer [minibian](https://minibianpi.wordpress.com/), but it should work with any raspberry distro of your choice.
 Make sure that ssh-keys are ok and you are able to login into your vps from raspberry without password.
+```
+docker build -f docker/Dockerfile_ubuntu -t motion .
+docker run -p 8081:8081 --device /dev/video0:/dev/video0 -v /home/ina/showbaby_data/prague:/var/lib/motion --privileged -it motion 
+```
 
 ### Motion setup
 
@@ -34,8 +40,8 @@ framerate 15
 # don't save images
 output_all off
 target_dir /home/ina/showbaby [your directory to store filmed videos]
-webcam_port 8081
-webcam_localhost off
+stream_port 8081
+stream_localhost off
 ```
 
 ### Python env setup
