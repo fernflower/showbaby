@@ -1,4 +1,4 @@
-FROM resin/rpi-raspbian:wheezy
+FROM raspbian/stretch:041518
 
 ARG width=640
 ARG height=320
@@ -22,7 +22,7 @@ COPY . /showbaby
 
 RUN apt-get update && \
     apt-get install -y motion v4l-utils python-pip && \
-    pip install j2cli && \
+    pip install -i https://pypi.python.org/simple/ j2cli && \
     rm -rf /var/lib/apt/lists 
 
 RUN cp /etc/motion/motion.conf /etc/motion/motion.conf.bkp && \ 
